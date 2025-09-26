@@ -8,20 +8,15 @@ const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const validator = require('validator');
 const {userMiddleware} = require('./middleware/user');
-
+require('dotenv').config();
 
 const app = express();
+
+const Port = process.env.Port || 5000;
 
 app.use(express.json());
 app.use(cookieParser());
 
-// For *Authentication APIs (3 APIs), you will create a **Signup API* to register
-//  a new user with validation and password hashing using bcrypt, a *Login API* to
-//  log in with email and password, generate a JWT token, and store it in cookies,
-//  and a *Logout API* to clear the JWT token from cookies.
-
-// For the *Profile API (1 API), you will build a **Get Profile API* that returns all
-//  details of the logged-in user. This must use JWT middleware for authentication.
 
 
 app.use('/signup', async (req, res) => {
@@ -87,11 +82,6 @@ app.use('/profile', userMiddleware, (req, res) => {
 });
 
 
-// For *Product APIs (4 APIs), you will create a **Create Product API* to add a product 
-// and store which user created it, a *Get Products API* to fetch all products and track
-//  which user accessed the data, an *Update Product API* to update a product only if it
-//  belongs to the logged-in user and log who updated it, and a *Delete Product API* to delete a product
-//  only if it belongs to the logged-in user and log who deleted it.
 
 
 
@@ -162,8 +152,8 @@ app.use('/deleteproduct/:id', userMiddleware, async (req, res) => {
 
 connectDB().then(() => {
     console.log('Database connected');
-    app.listen(3000, () => {
-        console.log('Server is running on port 3000');
+    app.listen(Port, () => {
+        console.log(`Server is running on port ${Port}`);
     });
 }).catch((error) => {
     console.error('Database connection error:', error);
